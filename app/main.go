@@ -17,8 +17,8 @@ func main() {
 		HelpName:    "bplivetool",
 		Description: "BytePlus Live Command Live Tool",
 		Flags: []cli.Flag{
-			&cli.StringFlag{Name: "access_key", Aliases: []string{"a"}},
-			&cli.StringFlag{Name: "secret_key", Aliases: []string{"s"}},
+			&cli.StringFlag{Name: "access_key", Aliases: []string{"a"}, Required: true},
+			&cli.StringFlag{Name: "secret_key", Aliases: []string{"s"}, Required: true},
 		},
 		Commands: []*cli.Command{ListCmd()},
 	}

@@ -19,6 +19,8 @@ func action(ctx *cli.Context) error {
 	bodyMap := map[string]interface{}{
 		"PageNo":        ctx.Int("PageNo"),
 		"PageItemCount": ctx.Int("PageItemCount"),
+		"Name":          ctx.String("Name"),
+		"Status":        ctx.Int("Status"),
 	}
 	body, err := json.Marshal(bodyMap)
 	if err != nil {
@@ -46,8 +48,10 @@ func ListCmd() *cli.Command {
 		Name:  "list",
 		Usage: "list usage",
 		Flags: []cli.Flag{
-			&cli.IntFlag{Name: "PageNo", Required: false},
-			&cli.IntFlag{Name: "PageItemCount", Required: false},
+			&cli.IntFlag{Name: "PageNo", Value: 0},
+			&cli.IntFlag{Name: "PageItemCount", Value: 10},
+			&cli.StringFlag{Name: "Name"},
+			&cli.IntFlag{Name: "Status", Value: 0},
 		},
 		Action: action,
 	}
