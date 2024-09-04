@@ -20,7 +20,7 @@ func main() {
 			&cli.StringFlag{Name: "access_key", Aliases: []string{"a"}, Required: true},
 			&cli.StringFlag{Name: "secret_key", Aliases: []string{"s"}, Required: true},
 		},
-		Commands: []*cli.Command{ListCmd()},
+		Commands: []*cli.Command{ListCmd(), CreateCmd()},
 	}
 
 	err := app.Run(os.Args)

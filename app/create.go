@@ -7,15 +7,15 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func listAction(ctx *cli.Context) error {
+func createAction(ctx *cli.Context) error {
 	livesaas.DefaultInstance.Client.SetAccessKey(ctx.String("access_key"))
 	livesaas.DefaultInstance.Client.SetSecretKey(ctx.String("secret_key"))
 
 	bodyMap := map[string]interface{}{
-		"PageNo":        ctx.Int("PageNo"),
-		"PageItemCount": ctx.Int("PageItemCount"),
-		"Name":          ctx.String("Name"),
-		"Status":        ctx.Int("Status"),
+		"CoverImage": ctx.String("CoverImage"),
+		"TemplateId": ctx.Int64("TemplateId"),
+		"Name":       ctx.String("Name"),
+		"LiveMode":   ctx.Int("LiveMode"),
 	}
 	body, err := json.Marshal(bodyMap)
 	if err != nil {
@@ -24,30 +24,30 @@ func listAction(ctx *cli.Context) error {
 
 	log.Debug().Str("body", string(body)).Msg("request")
 
-	resp, statusCode, err := livesaas.DefaultInstance.ListActivityAPI(nil, string(body))
+	resp, statusCode, err := livesaas.DefaultInstance.CreateActivityAPIV2(nil, string(body))
 	if err != nil {
 		return err
 	}
 	log.Info().
 		Int("status", statusCode).
-		Msg("ListActivityAPI")
+		Msg("CreateActivityAPIV2")
 
 	log.Info().
-		Interface("resp", resp.Result.Activities).
-		Msg("ListActivityAPI")
+		Interface("resp", resp.Result).
+		Msg("CreateActivityAPIV2")
 	return nil
 }
 
-func ListCmd() *cli.Command {
+func CreateCmd() *cli.Command {
 	return &cli.Command{
-		Name:  "list",
-		Usage: "list usage",
+		Name:  "create",
+		Usage: "create usage",
 		Flags: []cli.Flag{
-			&cli.IntFlag{Name: "PageNo", Value: 0},
-			&cli.IntFlag{Name: "PageItemCount", Value: 10},
+			&cli.StringFlag{Name: "CoverImage"},
+			&cli.Int64Flag{Name: "TemplateId"},
 			&cli.StringFlag{Name: "Name"},
-			&cli.IntFlag{Name: "Status", Value: 0},
+			&cli.IntFlag{Name: "LiveMode", Value: 0},
 		},
-		Action: listAction,
+		Action: createAction,
 	}
 }
